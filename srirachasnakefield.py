@@ -13,6 +13,7 @@ clock = pygame.time.Clock()
 screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption('Sriracha Snake Field')
 
+
 snake_img1 = pygame.image.load("snake1.png").convert_alpha()
 snake_img11 = pygame.image.load("snake1-1.png").convert_alpha()
 snake_img2 = pygame.image.load("snake2.png").convert_alpha()
@@ -51,9 +52,17 @@ for x in range(0, 13):
     snake_list.append(Snake())
 
 scroll_y = 0
-
+bottle_x = 425
 while True:
     clock.tick(fps)
+
+    keys = pygame.key.get_pressed()
+    if keys[K_LEFT]: bottle_x -= 5
+    if keys[K_RIGHT]: bottle_x += 5
+    if keys[K_ESCAPE]: sys.exit()
+
+    if bottle_x < 0: bottle_x = 0
+    elif bottle_x > 750: bottle_x = 750
 
     for e in pygame.event.get():
         if e.type == pygame.QUIT: sys.exit()
@@ -74,5 +83,5 @@ while True:
     if scroll_y == 50:
         scroll_y = 0
 
-    screen.blit(bottle_img,(475,525))    
+    screen.blit(bottle_img,(bottle_x,525))
     pygame.display.flip()
