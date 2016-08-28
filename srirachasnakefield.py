@@ -21,6 +21,8 @@ snake_img22 = pygame.image.load("snake2-1.png").convert_alpha()
 grass_img1 = pygame.image.load("grass1.png").convert_alpha()
 grass_img2 = pygame.image.load("grass2.png").convert_alpha()
 bottle_img = pygame.image.load("bottle.png").convert_alpha()
+sauce_img = pygame.image.load("sauce.png").convert_alpha()
+
 
 snake_r = snake_img1
 snake_l = snake_img2
@@ -47,19 +49,31 @@ class Snake:
         return self.direction
 
 snake_list = []
-
 for x in range(0, 13):
     snake_list.append(Snake())
 
+class Sauce():
+    def __init__(self,x_pos):
+        self.x = x_pos + 25
+        self.y = 530
+        self.speed = 5
+    def get_pos(self):
+        self.y -= 15
+        return (self.x, self.y)
+
+sauce_list = []
+
 scroll_y = 0
 bottle_x = 425
+
 while True:
     clock.tick(fps)
 
     keys = pygame.key.get_pressed()
-    if keys[K_LEFT]: bottle_x -= 5
-    if keys[K_RIGHT]: bottle_x += 5
+    if keys[K_LEFT]: bottle_x -= 10
+    if keys[K_RIGHT]: bottle_x += 10
     if keys[K_ESCAPE]: sys.exit()
+    if keys[K_SPACE]: sauce_list.append(Sauce(bottle_x))
 
     if bottle_x < 0: bottle_x = 0
     elif bottle_x > 750: bottle_x = 750
@@ -84,4 +98,11 @@ while True:
         scroll_y = 0
 
     screen.blit(bottle_img,(bottle_x,525))
+
+    for s in sauce_list:
+        x, y = s.get_pos()
+        screen.blit(sauce_img,(x,y))
+        if y < 0:
+            del s
+
     pygame.display.flip()
